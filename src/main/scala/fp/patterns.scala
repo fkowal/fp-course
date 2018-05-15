@@ -1,10 +1,6 @@
 package fp
 
-import java.util
-
 import fp.typeclasses.Show
-
-import scala.concurrent.Future
 
 object patterns {
 
@@ -49,13 +45,13 @@ object patterns {
 
   object Apply {
     implicit val apOption = new Apply[Option] {
-      override def ap[A, B](ff: Option[(A) => B])(fa: Option[A]): Option[B] =
+      override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] =
         for {
           f <- ff
           a <- fa
         } yield f(a)
 
-      override def map[A, B](fa: Option[A])(f: (A) => B): Option[B] =
+      override def map[A, B](fa: Option[A])(f: A => B): Option[B] =
         Functor.optionFunctor.map(fa)(f)
     }
   }
@@ -68,9 +64,9 @@ object patterns {
     implicit val optionAppicative = new Applicative[Option] {
       override def pure[A](x: A): Option[A] = Option(x)
 
-      override def ap[A, B](ff: Option[(A) => B])(fa: Option[A]): Option[B] = Apply.apOption.ap(ff)(fa)
+      override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] = Apply.apOption.ap(ff)(fa)
 
-      override def map[A, B](fa: Option[A])(f: (A) => B): Option[B] = ???
+      override def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
     }
   }
 
@@ -82,16 +78,16 @@ object patterns {
     implicit val opMonad = new Monad[Option] {
       override def pure[A](x: A): Option[A] = ???
 
-      override def ap[A, B](ff: Option[(A) => B])(fa: Option[A]): Option[B] = ???
+      override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] = ???
 
-      override def map[A, B](fa: Option[A])(f: (A) => B): Option[B] = ???
+      override def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
 
-      override def flatMap[A, B](fa: Option[A])(f: (A) => Option[B]): Option[B] = ???
+      override def flatMap[A, B](fa: Option[A])(f: A => Option[B]): Option[B] = ???
     }
   }
 
   def toString[F[_], A](fa: F[A])(implicit f: Functor[F], s: Show[A]): F[String] =
-    f.map(fa)(s.show(_))
+    f.map(fa)(s.show)
 
 //  val r = toString(Id"asdf")
 //    fa.map(_.toInt)

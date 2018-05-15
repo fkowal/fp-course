@@ -18,7 +18,6 @@ class FunctionsSpec extends FlatSpec {
     assert(fn2.apply(2) == ???)
     assert(fn2(2) == ???)
 
-//    fn3.apply(3) == "3" // uncomment me to see the message
     assert(fn3(3) == ???)
   }
 
@@ -52,7 +51,7 @@ class FunctionsSpec extends FlatSpec {
 
     assert(MySingleton.example() == ???)
 
-//    assert(MySingleton.apply("test") == ???)
-//    assert(MySingleton("test") == ???)
+    assert(MySingleton.apply("test") == 5)
+    assert(MySingleton("test") == 6)
   }
 }

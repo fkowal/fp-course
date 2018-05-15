@@ -31,7 +31,6 @@ class MaybeSpec extends FlatSpec with Matchers {
   }
 
   it should "support maybe syntax" in {
-    import Maybe.Syntax._
     "3.maybe" should compile
   }
 }

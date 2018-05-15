@@ -37,17 +37,7 @@ object Ex {
   Fill Column enum according to task board description above.
    */
   sealed trait Column
-  case object TODO extends Column
-  case object IN_PROGRESS extends Column
-  case object TO_VERIFY extends Column
-  case object DONE extends Column
 
-  def column(s: String): Column = s match {
-    case "TODO" => TODO
-    case "IN_PROGRESS" => IN_PROGRESS
-    case "TO_VERIFY" => TO_VERIFY
-    case "DONE" => DONE
-  }
   /*
   STEP 2:
 
@@ -56,15 +46,13 @@ object Ex {
   to store date.
 
   Hints:
+
   - data classes are rather discouraged in this step (inheritance).
    */
   sealed trait TaskEvent {
     def date: LocalDate
     def taskName: String
   }
-  case class CreateEvent(date: LocalDate, taskName: String, difficulty: Int) extends TaskEvent
-  case class RemoveEvent(date: LocalDate, taskName: String) extends TaskEvent
-  case class MoveEvent(date: LocalDate, taskName: String, column: Column) extends TaskEvent
 
   /*
   In the CSV file, task creation event may not have task's difficulty level.
@@ -84,20 +72,15 @@ object Ex {
   - 'when' expression can be handy,
   - in case of an error, throw IllegalArgumentException with meaningful message.
    */
-  def parseFile(path: String): List[TaskEvent] =
+  def parseFile(path: String): List[TaskEvent] = {
+    def mapToEvent(line: String): TaskEvent = ???
+
     Source
       .fromResource(path)
       .getLines()
-      .map(line => {
-        val strs = line.split(",")
-        strs(2) match {
-          case "CREATED" =>
-            CreateEvent(LocalDate.parse(strs(0)), strs(1), if (strs.size == 4) strs(3).toInt else DEFAULT_DIFFICULTY)
-          case "DELETED" => RemoveEvent(LocalDate.parse(strs(0)), strs(1))
-          case _ => MoveEvent(LocalDate.parse(strs(0)), strs(1), column(strs(3))) //Column.valueOf(strs(3)))
-        }
-      })
+      .map(mapToEvent)
       .toList
+  }
 
   /*
   STEP 4:
@@ -111,9 +94,8 @@ object Ex {
       to create one, also as immutable type,
   - use previously defined Column enum to represent columns.
    */
-  case class Task(name: String, difficulty: Int = DEFAULT_DIFFICULTY, column: Column = TODO)
 
-  case class TaskBoard(tasks: List[Task] = List()) {
+  class TaskBoard() {
 
     /*
     STEP 5:
@@ -125,15 +107,7 @@ object Ex {
     - remember to apply default difficulty level,
     - in case of an error, throw IllegalArgumentException with meaningful message.
      */
-    def apply(event: TaskEvent): TaskBoard = event match {
-      case create: CreateEvent => this.copy(tasks :+ Task(create.taskName, create.difficulty))
-      case _: RemoveEvent => this.copy(tasks.filter(_.name != event.taskName))
-      case move: MoveEvent =>
-        this.copy(tasks.map {
-          case task if task.name == event.taskName => task.copy(column = move.column)
-          case task => task
-        })
-    }
+    def apply(event: TaskEvent): TaskBoard = ???
 
     /*
     STEP 6:
@@ -165,18 +139,8 @@ object Ex {
     - use string templates,
     - you can iterate over enum values and replace _ to whitespace to have column names.
      */
-    def print(): Unit = {
-      println("TO DO:")
-      inColumn(TODO).foreach(println)
-      println("IN PROGRESS:")
-      inColumn(IN_PROGRESS).foreach(println)
-      println("TO VERIFY:")
-      inColumn(TO_VERIFY).foreach(println)
-      println("DONE:")
-      inColumn(DONE).foreach(println)
-    }
+    def print(): Unit = ???
 
-    def inColumn(column: Column): List[Task] = tasks.filter(_.column == column)
   }
 
   /*
@@ -200,10 +164,10 @@ object Ex {
 
     val events = parseFile("task_history.csv")
 
-    def aggr(board: TaskBoard, event: TaskEvent): TaskBoard = board(event)
+    def aggr(board: TaskBoard, event: TaskEvent): TaskBoard = ???
     val board = events
       .filter(_.date.isBefore(LocalDate.parse("2017-01-16")))
-      .foldLeft(TaskBoard())(aggr)
+      .foldLeft(new TaskBoard())(aggr)
 
     board.print()
   }

@@ -23,12 +23,7 @@ object functions {
     type Error = String
     type Parser[A] = String => Either[Error, (String, A)]
 
-    def or[A](left: Parser[A], right: Parser[A]): Parser[A] =
-      str =>
-        left(str) match {
-          case Left(_) => right(str)
-          case r => r
-      }
+    def or[A](left: Parser[A], right: Parser[A]): Parser[A] = ???
   }
 
   object identity {
