@@ -1,7 +1,5 @@
 package fp.typeclasses
 
-import .Functor
-
 // Functors are descriptions of computations
 // map(fa)(id) == fa
 // map(fa)(f compose g) == map(map(fa)(g), f)
@@ -10,11 +8,11 @@ trait Functor[F[_]] {
 }
 
 object Functor {
-  implicit val optionFunctor: Functor[Option] = ???
+  implicit val optionFunctor: cats.Functor[Option] = ???
 
   object Syntax {
     implicit class FunctorSyntax[F[_], A](val fa: F[A]) extends AnyVal {
-      def map[B](f: A => B)(implicit FF: Functor[F]): F[B] = FF.map(fa)(f)
+      def map[B](f: A => B)(implicit FF: cats.Functor[F]): F[B] = FF.map(fa)(f)
     }
 
   }

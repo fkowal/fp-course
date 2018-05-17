@@ -21,7 +21,6 @@ object Show {
   implicit val showBoolean: Show[Boolean] = ???
 
   implicit def list[A: Show]: Show[List[A]] = ???
-//    pure(list => "[" + list.map(a => implicitly[Show[A]].show(a)).mkString(",") + "]")
 
   object Syntax {
     // val.show support
