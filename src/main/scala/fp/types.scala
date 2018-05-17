@@ -20,10 +20,6 @@ class types {
 
   def f() = if (true) "abc" else "def"
 
-  trait MyBox[A, B, C] {
-    //      ...
-  }
-
   //  Int = *
   //  * => *
   //  fn(a): b

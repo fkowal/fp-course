@@ -6,7 +6,7 @@ object exerciseEq extends App {
 
   def check(i: Int): String =
     if (i === 1) "It is one!" else "It is something else then 1"
-  //if (i == "1") "It is one!" else "It is something else then 1"
+  //if (i == "1") "It is one!" else "It is something else then 1" // this should not compile
 
   println(check(1))
   println(check(2))

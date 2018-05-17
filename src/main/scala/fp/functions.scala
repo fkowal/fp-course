@@ -27,7 +27,7 @@ object functions {
   }
 
   object identity {
-    def apply[T](t: T): T = ??? // TODO
+    def apply[T](t: T): T = t
   }
   // think of polimorphic function as functions that
   // take a type are return a function

@@ -30,7 +30,7 @@ class BasicSpec extends FlatSpec with Matchers {
   }
 
   it should "map to string" in {
-    List(1, 2, 3, 4).map(i => i.toString) == List()
+    List(1, 2, 3, 4).map(i => i.toString) == List("1", "2", "3", "4")
   }
 
   it should "work for tuples" in {

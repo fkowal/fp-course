@@ -18,7 +18,7 @@ case object Empty extends Maybe[Nothing]
 object Maybe {
   @inline def apply[A: Maybe]: Maybe[A] = implicitly[Maybe[A]]
 
-  def just[A](value: A): Maybe[A] = if (null == value) Empty else Just(value)
+  def maybe[A](value: A): Maybe[A] = if (null == value) Empty else Just(value)
 
   def empty[A](): Maybe[A] = Empty
 
@@ -32,7 +32,7 @@ object Maybe {
     if (l.isEmpty)
       Empty
     else {
-      l.foldLeft(just(List[A]()))(map2(_, _)((lv, v) => lv :+ v))
+      l.foldLeft(maybe(List[A]()))(map2(_, _)((lv, v) => lv :+ v))
     }
   }
 
@@ -40,7 +40,7 @@ object Maybe {
 
   object Syntax {
     implicit class MaybeSyntax[A](a: A) {
-      def maybe: Maybe[A] = Maybe.just(a)
+      def maybe: Maybe[A] = Maybe.maybe(a)
     }
   }
 }

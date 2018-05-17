@@ -18,7 +18,6 @@ class FunctionsSpec extends FlatSpec {
     assert(fn2.apply(2) == "2")
     assert(fn2(2) == "2")
 
-//    fn3.apply(3) == "3" // uncomment me to see the message
     assert(fn3(3) == "3")
   }
 

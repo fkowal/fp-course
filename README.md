@@ -38,5 +38,10 @@ Generic programming
  - CSV generator
  - Diff
 
+[Java - Scala Cheatsheet](http://rea.tech/java-to-scala-cheatsheet/)
+
+[Scala Cheatsheet](https://gist.github.com/heathermiller/2ab9ef36910fdfdd20e9)
+
+
 [Read more](https://gist.github.com/jdegoes/97459c0045f373f4eaf126998d8f65dc)
 
