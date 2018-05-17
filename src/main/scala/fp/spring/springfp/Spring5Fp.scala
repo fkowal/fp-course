@@ -1,12 +1,15 @@
 package fp.spring.springfp
 
-import cats.{Functor, Id}
+import cats.Id
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import fp.spring.springfp.infra.Sync
+import fp.spring.springfp.user._
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.{Bean, Configuration}
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.{ControllerAdvice, ExceptionHandler, ResponseStatus}
+import reactor.core.publisher.Mono
 
 @SpringBootApplication
 @Configuration
@@ -21,18 +24,36 @@ class Spring5Fp {
   def noSuchElementException(ex: NoSuchElementException): Unit = ()
 
   @Bean
-  def memoryRepo: UserRepository[Id] = new InMemoryRepository
+  def memoryRepo: UserRepository[Id] = Sync.repo
 
   @Bean
-  def functorId = Functor[Id]
+  def monadId = Sync.idMonad
+
+  //  @Bean
+//  def functorId = Functor[Id]
+
+//  @Bean
+//  def applicativeId = Applicative[Id]
+
 //
 //  @Bean
-//  def functorMono = new Functor[Mono] {
-//    override def map[A, B](fa: Mono[A])(f: A => B): Mono[B] = fa.map(a => f(a))
+//  def usdf = new UserDetailService[Id] {
+//    override def getUserDetails(user: User): Id[UserDetails] = UserDetails(user.userId)
 //  }
+
+//  @Bean
+//  def functorId = Functor[Id]
+//
+  @Bean
+  def usdf = new UserDetailService[Mono] {
+    override def getUserDetails(user: User): Mono[UserDetails] = Mono.just(UserDetails(user.userId))
+  }
 //
 //  @Bean
-//  def monoRepo: UserRepository[Mono] = new MonoRepo
+//  def functorMono = AsyncDomain.monadMono
+//
+//  @Bean
+//  def monoRepo: UserRepository[Mono] = AsyncDomain.repo
 }
 
 object Spring5Fp extends App {
