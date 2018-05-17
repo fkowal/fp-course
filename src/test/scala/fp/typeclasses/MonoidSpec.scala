@@ -8,6 +8,6 @@ class MonoidSpec extends FlatSpec with Matchers {
     assert(monoid.empty == "")
     assert(monoid.combine("a", "b") == "ab")
 
-    assert(monoid.combine(monoid.combine("a", "b"), "c") == monoid.combine(a, monoid.combine("b", "c")))
+    assert(monoid.combine(monoid.combine("a", "b"), "c") == monoid.combine("a", monoid.combine("b", "c")))
   }
 }
