@@ -8,12 +8,13 @@ trait Functor[F[_]] {
 }
 
 object Functor {
+  def apply[F[_]](implicit f: Functor[F]): Functor[F] = f
+
   implicit val optionFunctor: cats.Functor[Option] = ???
 
   object Syntax {
     implicit class FunctorSyntax[F[_], A](val fa: F[A]) extends AnyVal {
-      def map[B](f: A => B)(implicit FF: cats.Functor[F]): F[B] = FF.map(fa)(f)
+      def map[B](f: A => B)(implicit FF: Functor[F]): F[B] = FF.map(fa)(f)
     }
-
   }
 }

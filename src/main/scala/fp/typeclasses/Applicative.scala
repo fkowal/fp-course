@@ -5,6 +5,8 @@ trait Applicative[F[_]] extends Apply[F] {
 }
 
 object Applicative {
+  def apply[F[_]](implicit applicative: Applicative[F]): Applicative[F] = applicative
+
   implicit val optionAppicative = new Applicative[Option] {
     override def pure[A](x: A): Option[A] = Option(x)
 
