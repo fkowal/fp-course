@@ -3,14 +3,14 @@ import sbt._
 resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
 
 val catsVersion = "1.0.1"
 
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % catsVersion,
   "com.chuusai" %% "shapeless" % "2.3.2",
-  "com.lihaoyi" % "ammonite" % "1.1.0" % Test cross CrossVersion.full,
+  "com.lihaoyi" % "ammonite" % "1.1.1" % Test cross CrossVersion.full,
   "org.scalatest" %% "scalatest" % "3.0.5" % Test,
   "org.springframework.boot" % "spring-boot-starter-webflux" % "2.0.2.RELEASE",
   "com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.9.5"
