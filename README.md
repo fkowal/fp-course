@@ -1,3 +1,20 @@
+Agenda
+======
+ - Intro
+ - Problem specification (solution FP with Spring)
+     * fp/spring
+ - Intro to Scala
+     * test/fp/basics
+     * test/fp/typeclasses/MaybeSpec
+ - Get to know your Typeclasses
+     * fp/typeclasses/
+        * ShowSpec
+        * EqSpec
+        * CsvEncoderSpec
+ - FP patterns
+    * fp/typeclasses/
+    
+
 Basic scala
 ===========
 (types.scala)

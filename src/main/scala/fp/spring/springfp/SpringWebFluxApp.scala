@@ -9,18 +9,14 @@ import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
 import org.springframework.web.reactive.function.BodyExtractors
 import org.springframework.web.reactive.function.server.RequestPredicates.{GET, POST}
 import org.springframework.web.reactive.function.server.RouterFunctions.route
-import org.springframework.web.reactive.function.server.{
-  HandlerStrategies,
-  RouterFunction,
-  RouterFunctions,
-  ServerResponse
-}
+import org.springframework.web.reactive.function.server.{HandlerStrategies, RouterFunction, RouterFunctions, ServerResponse}
 import reactor.core.publisher.Mono
+import reactor.ipc.netty.NettyContext
 import reactor.ipc.netty.http.server.HttpServer
 
 class SpringWebFluxApp {
 
-  def start(port: Int) = {
+  def start(routing: RouterFunction[ServerResponse], port: Int): NettyContext = {
 
     def runServer(router: RouterFunction[ServerResponse]) = {
       val objectMapper = new ObjectMapper()
@@ -42,29 +38,33 @@ class SpringWebFluxApp {
       server.newHandler(adapter)
     }
 
-    // setup
-//    import infra.Sync._ // uncomment this line for synchronous interpretation
-
-    import infra.AsyncDomain._ // use asynchronous interpreter
-
-    val server = runServer(SpringWebFluxApp.routing(controller))
+    val server = runServer(routing)
 
     server.block()
   }
 }
 
 object SpringWebFluxApp extends App {
-  new SpringWebFluxApp().start(8080)
+//  val routing = routingBuilder(infra.AsyncDomain.controller)(infra.AsyncDomain.idMonoNat)
+
+  val routing = routingBuilder(infra.Sync.controller)(infra.Sync.idMonoNat)
+
+  new SpringWebFluxApp().start(routing, port = 8080)
 
   System.out.println("Press ENTER to exit.")
   System.in.read()
 
-  def routing[F[_]](controller: UserController[F])(implicit nat: ~>[F, Mono]): RouterFunction[ServerResponse] = {
+  def routingBuilder[F[_]](controller: UserController[F])(implicit nat: ~>[F, Mono]): RouterFunction[ServerResponse] = {
     route(
       GET("/user/{userId}/age"),
       request => {
         val userId = request.pathVariable("userId")
         ServerResponse.ok().body(nat(controller.functorRequired(userId)), classOf[Int])
+      }
+    ).andRoute(GET("/user/{userId}"),
+      request => {
+        val userId = request.pathVariable("userId")
+        ServerResponse.ok().body(nat(controller.get(userId)), classOf[User])
       }
     ).andRoute(
       POST("/user"),
