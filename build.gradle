@@ -27,11 +27,11 @@ dependencies {
     // scala
     compile group: 'org.scala-lang',               name: 'scala-library',                 version: '2.12.8'
     compile group: 'org.scala-lang',               name: 'scala-reflect',                 version: '2.12.8'
-    compile group: "org.springframework.boot",     name: "spring-boot-starter-webflux",   version: "2.0.2.RELEASE"
+    compile group: "org.springframework.boot",     name: "spring-boot-starter-webflux",   version: "2.1.0.RELEASE"
     compile group: "com.fasterxml.jackson.module", name: "jackson-module-scala_2.12",     version: "2.9.5"
 
-    compile group: "org.typelevel", name: 'cats-core_2.12', version: "1.0.1"
-    compile group: "com.chuusai", name: 'shapeless_2.12', version: "2.3.2"
+    compile group: "org.typelevel", name: 'cats-core_2.12', version: "1.5.0"
+    compile group: "com.chuusai", name: 'shapeless_2.12', version: "2.3.3"
 
 //    compile "org.scala-lang:scala-compiler:2.12.6"
     testCompile group: "com.lihaoyi", name: "ammonite_2.12.8", version: "1.6.0"
@@ -39,8 +39,8 @@ dependencies {
     testRuntime group: 'org.pegdown', name: 'pegdown', version: '1.6.0'
 }
 
-//mainClassName = 'fp.spring.springfp.SpringWebFluxApp'
-mainClassName = 'fp.spring.springfp.Spring5Fp'
+mainClassName = 'fp.spring.springfp.SpringWebFluxApp'
+//mainClassName = 'fp.spring.springfp.Spring5Fp'
 
 compileJava.options.compilerArgs += '-parameters'
 
