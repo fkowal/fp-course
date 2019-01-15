@@ -34,6 +34,9 @@ object AsyncDomain {
 
   object userService extends UserDetailService[Mono] {
     override def getUserDetails(user: User): Mono[UserDetails] =
-      Mono.just(UserDetails(user.userId, "AsyncImpl " + user.toString))
+      if (user.name.contains("error"))
+        Mono.error(new RuntimeException(s"failed fetching user details $user"))
+      else
+        Mono.just(UserDetails(userId = user.userId, details = "AsyncImpl " + user.toString))
   }
 }

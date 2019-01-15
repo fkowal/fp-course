@@ -12,7 +12,7 @@ class MonoRepo extends UserRepository {
 
   override def getUserById(userId: String): Mono[User] =
     Mono
-      .delay(Duration.ofSeconds(1000))
+      .delay(Duration.ofSeconds(1))
       .flatMap(_ => Mono.just(users(userId)))
 
   override def save(user: User): Mono[Unit] =

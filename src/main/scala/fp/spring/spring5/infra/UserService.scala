@@ -6,5 +6,8 @@ import reactor.core.publisher.Mono
 @Service
 class UserService extends UserDetailService {
   override def getUserDetails(user: User): Mono[UserDetails] =
-    Mono.just(UserDetails(userId = user.userId, details = user.toString))
+    if (user.name.contains("error"))
+      Mono.error(new RuntimeException(s"failed fetching user details $user"))
+    else
+      Mono.just(UserDetails(userId = user.userId, details = user.toString))
 }

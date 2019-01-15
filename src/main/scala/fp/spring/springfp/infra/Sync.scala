@@ -27,6 +27,9 @@ object Sync {
 
   object userService extends UserDetailService[Id] {
     override def getUserDetails(user: User): Id[UserDetails] =
-      UserDetails(user.userId, details = "SyncImpl " + user.toString)
+      if (user.name.contains("error"))
+        throw new RuntimeException(s"failed fetching user details $user")
+      else
+        UserDetails(user.userId, details = "SyncImpl " + user.toString)
   }
 }
