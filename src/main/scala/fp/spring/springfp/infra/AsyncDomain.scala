@@ -1,5 +1,7 @@
 package fp.spring.springfp.infra
 
+import java.time.Duration
+
 import cats.arrow.FunctionK
 import cats.{~>, Monad}
 import fp.spring.springfp.user._
@@ -34,9 +36,14 @@ object AsyncDomain {
 
   object userService extends UserDetailService[Mono] {
     override def getUserDetails(user: User): Mono[UserDetails] =
-      if (user.name.contains("error"))
-        Mono.error(new RuntimeException(s"failed fetching user details $user"))
-      else
-        Mono.just(UserDetails(userId = user.userId, details = "AsyncImpl " + user.toString))
+      Mono
+        .delay(Duration.ofSeconds(1))
+        .flatMap(
+          _ =>
+            if (user.name.contains("error"))
+              Mono.error[UserDetails](new RuntimeException(s"failed fetching user details $user"))
+            else
+              Mono.just(UserDetails(userId = user.userId, details = user.toString))
+        )
   }
 }

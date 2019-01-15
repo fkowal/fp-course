@@ -2,12 +2,13 @@ package fp.spring.springfp
 
 import cats.Id
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import fp.spring.spring4.infra.RestResponseEntityExceptionHandler
 import fp.spring.springfp.infra.Sync
 import fp.spring.springfp.infra.AsyncDomain
 import fp.spring.springfp.user._
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.{Bean, Configuration}
+import org.springframework.context.annotation.{Bean, Configuration, Import}
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.{ControllerAdvice, ExceptionHandler, ResponseStatus}
 import reactor.core.publisher.Mono
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono
 @SpringBootApplication
 @Configuration
 @ControllerAdvice
+@Import(Array(classOf[RestResponseEntityExceptionHandler]))
 class Spring5Fp {
 
   @Bean
