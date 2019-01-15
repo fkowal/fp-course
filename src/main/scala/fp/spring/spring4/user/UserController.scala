@@ -3,7 +3,10 @@ package fp.spring.spring4.user
 import org.springframework.web.bind.annotation._
 
 @RestController
-class UserController(userRepository: UserRepository) {
+class UserController(
+  userRepository: UserRepository,
+  userDetailService: UserDetailService
+) {
 
   @GetMapping(value = Array("/user/{userId}"))
   def get(@PathVariable("userId") userId: String): User =
@@ -18,4 +21,11 @@ class UserController(userRepository: UserRepository) {
     userRepository
       .getUserById(userId)
       .age
+
+  @GetMapping(value = Array("/user/{userId}/details"))
+  def userDetails(@PathVariable("userId") userId: String): UserDetails = {
+    val user = userRepository.getUserById(userId)
+
+    userDetailService.getUserDetails(user)
+  }
 }

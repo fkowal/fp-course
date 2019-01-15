@@ -3,6 +3,7 @@ package fp.spring.springfp
 import cats.Id
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import fp.spring.springfp.infra.Sync
+import fp.spring.springfp.infra.AsyncDomain
 import fp.spring.springfp.user._
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -29,31 +30,17 @@ class Spring5Fp {
   @Bean
   def monadId = Sync.idMonad
 
-  //  @Bean
-//  def functorId = Functor[Id]
-
-//  @Bean
-//  def applicativeId = Applicative[Id]
-
-//
-//  @Bean
-//  def usdf = new UserDetailService[Id] {
-//    override def getUserDetails(user: User): Id[UserDetails] = UserDetails(user.userId)
-//  }
-
-//  @Bean
-//  def functorId = Functor[Id]
-//
   @Bean
-  def usdf = new UserDetailService[Mono] {
-    override def getUserDetails(user: User): Mono[UserDetails] = Mono.just(UserDetails(user.userId))
-  }
-//
+  def userService = Sync.userService
+
 //  @Bean
-//  def functorMono = AsyncDomain.monadMono
+//  def monadMono = AsyncDomain.monadMono
 //
 //  @Bean
 //  def monoRepo: UserRepository[Mono] = AsyncDomain.repo
+//
+//  @Bean
+//  def userService = AsyncDomain.userService
 }
 
 object Spring5Fp extends App {

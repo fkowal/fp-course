@@ -11,15 +11,15 @@ class UserController[F[_]: Monad](
 ) {
 
   @GetMapping(value = Array("/user/{userId}"))
-  def get(@PathVariable("userId") userId: String) =
+  def get(@PathVariable("userId") userId: String): F[User] =
     userRepository.getUserById(userId)
 
   @PostMapping(value = Array("/user"))
-  def put(@RequestBody user: User) =
+  def put(@RequestBody user: User): F[String] =
     userRepository.save(user)
 
   @GetMapping(value = Array("/user/{userId}/age"))
-  def functorRequired(@PathVariable("userId") userId: String) =
+  def functorRequired(@PathVariable("userId") userId: String): F[Int] =
     userRepository
       .getUserById(userId)
       .map(_.age) // functor (syntax/extension method) needed to support this
@@ -39,7 +39,7 @@ class UserController[F[_]: Monad](
   }
 
   @GetMapping(value = Array("/user/{userId}/details"))
-  def monadRequired(@PathVariable("userId") userId: String): F[UserDetails] =
+  def userDetails(@PathVariable("userId") userId: String): F[UserDetails] =
     for {
       user <- userRepository.getUserById(userId)
       details <- service.getUserDetails(user)

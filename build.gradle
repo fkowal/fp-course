@@ -33,8 +33,8 @@ dependencies {
     compile group: "org.typelevel", name: 'cats-core_2.12', version: "1.5.0"
     compile group: "com.chuusai", name: 'shapeless_2.12', version: "2.3.3"
 
-//    compile "org.scala-lang:scala-compiler:2.12.6"
-    testCompile group: "com.lihaoyi", name: "ammonite_2.12.8", version: "1.6.0"
+//    compile "org.scala-lang:scala-compiler:2.12.8"
+//    testCompile group: "com.lihaoyi", name: "ammonite_2.12.8", version: "1.6.0"
     testCompile group: "org.scalatest", name: 'scalatest_2.12', version: "3.0.5"
     testRuntime group: 'org.pegdown', name: 'pegdown', version: '1.6.0'
 }
@@ -105,12 +105,13 @@ test {
     }
 }
 
-task repl(type:JavaExec) {
-    main = "scala.tools.nsc.MainGenericRunner"
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput System.in
-    args '-usejavacp'
-}
+//task repl(type:JavaExec) {
+//    mainClassName = "scala.tools.nsc.MainGenericRunner"
+//    main = "scala.tools.nsc.MainGenericRunner"
+//    classpath = sourceSets.main.runtimeClasspath
+//    standardInput System.in
+//    args '-usejavacp'
+//}
 
 wrapper {
     gradleVersion = '5.1'

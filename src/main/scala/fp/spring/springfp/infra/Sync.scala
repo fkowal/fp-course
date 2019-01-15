@@ -25,7 +25,8 @@ object Sync {
     }
   }
 
-  private object userService extends UserDetailService[Id] {
-    override def getUserDetails(user: User): Id[UserDetails] = UserDetails(user.userId)
+  object userService extends UserDetailService[Id] {
+    override def getUserDetails(user: User): Id[UserDetails] =
+      UserDetails(user.userId, details = "SyncImpl " + user.toString)
   }
 }

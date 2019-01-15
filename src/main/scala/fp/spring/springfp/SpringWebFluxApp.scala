@@ -3,7 +3,7 @@ package fp.spring.springfp
 import cats._
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import fp.spring.springfp.user.{User, UserController}
+import fp.spring.springfp.user.{User, UserController, UserDetails}
 import org.springframework.http.codec.json.{Jackson2JsonDecoder, Jackson2JsonEncoder}
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
 import org.springframework.web.reactive.function.BodyExtractors
@@ -53,9 +53,9 @@ class SpringWebFluxApp {
 }
 
 object SpringWebFluxApp extends App {
-//  val routing = routingBuilder(infra.AsyncDomain.controller)(infra.AsyncDomain.idMonoNat)
+  val routing = routingBuilder(infra.AsyncDomain.controller)(infra.AsyncDomain.idMonoNat)
 
-  val routing = routingBuilder(infra.Sync.controller)(infra.Sync.idMonoNat)
+//  val routing = routingBuilder(infra.Sync.controller)(infra.Sync.idMonoNat)
 
   new SpringWebFluxApp().start(routing, port = 8080)
 
@@ -77,15 +77,24 @@ object SpringWebFluxApp extends App {
         POST("/user"),
         request => {
 
-          request
-            .body(BodyExtractors.toMono(classOf[User]))
-            .flatMap(usr => nat(controller.put(usr)))
-            .subscribe(x => println(x))
+          val result: Mono[String] =
+            request
+              .body(BodyExtractors.toMono(classOf[User]))
+              .flatMap(usr => nat(controller.put(usr)))
+
           ServerResponse
             .ok()
-            .syncBody(
-              ()
-            )
+            .body(result, classOf[String])
+        }
+      )
+      .andRoute(
+        GET("/user/{userId}/details"),
+        request => {
+          val userId = request.pathVariable("userId")
+
+          ServerResponse
+            .ok()
+            .body(nat(controller.userDetails(userId)), classOf[UserDetails])
         }
       )
 
