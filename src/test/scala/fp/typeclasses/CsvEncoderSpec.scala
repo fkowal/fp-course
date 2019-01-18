@@ -6,6 +6,10 @@ import shapeless.HNil
 class CsvEncoderSpec extends FlatSpec with Matchers {
   import CsvEncoder.encodeCsv
 
+  it should "compile" in {
+    "CsvEncoder[String]" should compile
+  }
+
   it should "encode string" in {
     assert(CsvEncoder[String]().encode("string") === List("string"))
   }

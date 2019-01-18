@@ -1,8 +1,9 @@
 package fp.spring.springfp.infra
 
+import java.time.Duration
+
 import cats.arrow.FunctionK
 import cats.{~>, Monad}
-import fp.spring.springfp.infra.Sync.{repo, userService}
 import fp.spring.springfp.user._
 import reactor.core.publisher.Mono
 
@@ -23,7 +24,7 @@ object AsyncDomain {
   def controller: UserController[Mono] =
     new UserController[Mono](repo, userService)
 
-  private object repo extends UserRepository[Mono] {
+  object repo extends UserRepository[Mono] {
     val repo = Sync.repo
 
     override def getUserById(userId: String): Mono[User] =
@@ -33,8 +34,16 @@ object AsyncDomain {
       Mono.just(repo.save(user))
   }
 
-  private object userService extends UserDetailService[Mono] {
+  object userService extends UserDetailService[Mono] {
     override def getUserDetails(user: User): Mono[UserDetails] =
-      Mono.just(UserDetails(user.userId))
+      Mono
+        .delay(Duration.ofSeconds(1))
+        .flatMap(
+          _ =>
+            if (user.name.contains("error"))
+              Mono.error[UserDetails](new RuntimeException(s"failed fetching user details $user"))
+            else
+              Mono.just(UserDetails(userId = user.userId, details = "AsyncImpl " + user.toString))
+        )
   }
 }

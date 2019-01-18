@@ -4,7 +4,10 @@ import org.springframework.web.bind.annotation._
 import reactor.core.publisher.Mono
 
 @RestController
-class UserController(userRepository: UserRepository) {
+class UserController(
+  userRepository: UserRepository,
+  userDetailService: UserDetailService
+) {
 
   @GetMapping(value = Array("/user/{userId}"))
   def get(@PathVariable("userId") userId: String): Mono[User] =
@@ -19,4 +22,11 @@ class UserController(userRepository: UserRepository) {
     userRepository
       .getUserById(userId)
       .map(_.age)
+
+  @GetMapping(value = Array("/user/{userId}/details"))
+  def userDetails(@PathVariable("userId") userId: String): Mono[UserDetails] =
+    for {
+      user <- userRepository.getUserById(userId)
+      details <- userDetailService.getUserDetails(user)
+    } yield details
 }

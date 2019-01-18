@@ -1,15 +1,17 @@
 package fp.spring.spring5
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import fp.spring.spring4.infra.RestResponseEntityExceptionHandler
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.{Bean, Configuration}
+import org.springframework.context.annotation.{Bean, Configuration, Import}
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.{ControllerAdvice, ExceptionHandler, ResponseStatus}
 
 @SpringBootApplication
 @Configuration
 @ControllerAdvice
+@Import(Array(classOf[RestResponseEntityExceptionHandler]))
 class Spring5App {
 
   @Bean

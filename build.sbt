@@ -3,16 +3,16 @@ import sbt._
 resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.8"
 
-val catsVersion = "1.0.1"
+val catsVersion = "1.5.0"
 
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % catsVersion,
-  "com.chuusai" %% "shapeless" % "2.3.2",
-  "com.lihaoyi" % "ammonite" % "1.1.1" % Test cross CrossVersion.full,
+  "com.chuusai" %% "shapeless" % "2.3.3",
+  "com.lihaoyi" % "ammonite" % "1.6.0" % Test cross CrossVersion.full,
   "org.scalatest" %% "scalatest" % "3.0.5" % Test,
-  "org.springframework.boot" % "spring-boot-starter-webflux" % "2.0.2.RELEASE",
+  "org.springframework.boot" % "spring-boot-starter-webflux" % "2.1.0.RELEASE",
   "com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.9.5"
 )
 val start =
@@ -29,7 +29,7 @@ initialCommands in console := start
 addCompilerPlugin("org.scalamacros" %% "paradise" % "2.1.1" cross CrossVersion.full)
 
 // For kind projector, `Either[String, ?]`
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
+addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
 
 scalacOptions ++= Seq(
   "-deprecation",                      // Emit warning and location for usages of deprecated APIs.

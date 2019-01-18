@@ -3,7 +3,7 @@ package fp.spring.springfp
 import cats._
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import fp.spring.springfp.user.{User, UserController}
+import fp.spring.springfp.user.{User, UserController, UserDetails}
 import org.springframework.http.codec.json.{Jackson2JsonDecoder, Jackson2JsonEncoder}
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
 import org.springframework.web.reactive.function.BodyExtractors
@@ -16,11 +16,11 @@ import org.springframework.web.reactive.function.server.{
   ServerResponse
 }
 import reactor.core.publisher.Mono
-import reactor.ipc.netty.http.server.HttpServer
+import reactor.netty.http.server.HttpServer
 
 class SpringWebFluxApp {
 
-  def start(port: Int) = {
+  def start(routing: RouterFunction[ServerResponse], port: Int) = {
 
     def runServer(router: RouterFunction[ServerResponse]) = {
       val objectMapper = new ObjectMapper()
@@ -37,50 +37,66 @@ class SpringWebFluxApp {
           .build()
       )
       val adapter = new ReactorHttpHandlerAdapter(httpHandler)
-      val server = HttpServer.create("localhost", port)
+      val server = HttpServer
+        .create()
+        .handle(adapter)
+        .host("localhost")
+        .port(port)
 
-      server.newHandler(adapter)
+      server
     }
 
-    // setup
-//    import infra.Sync._ // uncomment this line for synchronous interpretation
+    val server = runServer(routing)
 
-    import infra.AsyncDomain._ // use asynchronous interpreter
-
-    val server = runServer(SpringWebFluxApp.routing(controller))
-
-    server.block()
+    server.bindNow()
   }
 }
 
 object SpringWebFluxApp extends App {
-  new SpringWebFluxApp().start(8080)
+  val routing = routingBuilder(infra.AsyncDomain.controller)(infra.AsyncDomain.idMonoNat)
+
+//  val routing = routingBuilder(infra.Sync.controller)(infra.Sync.idMonoNat)
+
+  new SpringWebFluxApp().start(routing, port = 8080)
 
   System.out.println("Press ENTER to exit.")
   System.in.read()
 
-  def routing[F[_]](controller: UserController[F])(implicit nat: ~>[F, Mono]): RouterFunction[ServerResponse] = {
+  def routingBuilder[F[_]](controller: UserController[F])(implicit nat: ~>[F, Mono]): RouterFunction[ServerResponse] = {
     route(
       GET("/user/{userId}/age"),
       request => {
         val userId = request.pathVariable("userId")
         ServerResponse.ok().body(nat(controller.functorRequired(userId)), classOf[Int])
       }
-    ).andRoute(
-      POST("/user"),
-      request => {
+    ).andRoute(GET("/user/{userId}"), request => {
+        val userId = request.pathVariable("userId")
+        ServerResponse.ok().body(nat(controller.get(userId)), classOf[User])
+      })
+      .andRoute(
+        POST("/user"),
+        request => {
 
-        request
-          .body(BodyExtractors.toMono(classOf[User]))
-          .flatMap(usr => nat(controller.put(usr)))
-          .subscribe(x => println(x))
-        ServerResponse
-          .ok()
-          .syncBody(
-            ()
-          )
-      }
-    )
+          val result: Mono[String] =
+            request
+              .body(BodyExtractors.toMono(classOf[User]))
+              .flatMap(usr => nat(controller.put(usr)))
+
+          ServerResponse
+            .ok()
+            .body(result, classOf[String])
+        }
+      )
+      .andRoute(
+        GET("/user/{userId}/details"),
+        request => {
+          val userId = request.pathVariable("userId")
+
+          ServerResponse
+            .ok()
+            .body(nat(controller.userDetails(userId)), classOf[UserDetails])
+        }
+      )
 
   }
 }
