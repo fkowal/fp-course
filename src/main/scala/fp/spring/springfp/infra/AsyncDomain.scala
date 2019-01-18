@@ -43,7 +43,7 @@ object AsyncDomain {
             if (user.name.contains("error"))
               Mono.error[UserDetails](new RuntimeException(s"failed fetching user details $user"))
             else
-              Mono.just(UserDetails(userId = user.userId, details = user.toString))
+              Mono.just(UserDetails(userId = user.userId, details = "AsyncImpl " + user.toString))
         )
   }
 }
