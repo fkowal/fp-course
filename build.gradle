@@ -39,8 +39,10 @@ dependencies {
     testRuntime group: 'org.pegdown', name: 'pegdown', version: '1.6.0'
 }
 
-mainClassName = 'fp.spring.springfp.SpringWebFluxApp'
+//mainClassName = 'fp.spring.spring4.UserApp'
+//mainClassName = 'fp.spring.spring5.Spring5App'
 //mainClassName = 'fp.spring.springfp.Spring5Fp'
+mainClassName = 'fp.spring.springfp.SpringWebFluxApp'
 
 compileJava.options.compilerArgs += '-parameters'
 
