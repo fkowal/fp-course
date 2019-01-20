@@ -10,6 +10,6 @@ class InMemoryRepository extends UserRepository {
   override def getUserById(userId: String): User =
     users(userId)
 
-  override def save(user: User): Unit =
+  override def save(user: User): Option[User] =
     users.put(user.userId, user)
 }

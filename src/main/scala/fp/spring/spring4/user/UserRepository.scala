@@ -7,5 +7,5 @@ package fp.spring.spring4.user
 trait UserRepository {
   def getUserById(userId: String): User
 
-  def save(user: User): Unit
+  def save(user: User): Option[User]
 }
