@@ -2,7 +2,7 @@ package fp.basics
 
 import org.scalatest.FlatSpec
 
-class FunctionsSpec extends FlatSpec {
+class Ex2_FunctionsSpec extends FlatSpec {
   it should "functions syntax" in {
     val fn1 = new Function[Int, String] {
       override def apply(v1: Int): String = v1.toString

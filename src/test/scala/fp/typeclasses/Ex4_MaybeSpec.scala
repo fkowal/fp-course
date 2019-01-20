@@ -2,7 +2,7 @@ package fp.typeclasses
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class MaybeSpec extends FlatSpec with Matchers {
+class Ex4_MaybeSpec extends FlatSpec with Matchers {
   import Maybe._
 
   it should "map" in {
