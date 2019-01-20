@@ -2,7 +2,7 @@ package fp.basics
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class BasicSpec extends FlatSpec with Matchers {
+class Ex1_BasicSpec extends FlatSpec with Matchers {
   it should "pattern match" in {
     def goldilocks(expr: Any) = expr match {
       case ("porridge", _) ⇒ "eating"
