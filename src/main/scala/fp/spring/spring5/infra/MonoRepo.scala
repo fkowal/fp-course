@@ -15,7 +15,7 @@ class MonoRepo extends UserRepository {
       .delay(Duration.ofSeconds(1))
       .flatMap(_ => Mono.just(users(userId)))
 
-  override def save(user: User): Mono[Unit] =
+  override def save(user: User): Mono[Option[User]] =
     Mono
       .just(users.put(user.userId, user))
 }

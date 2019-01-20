@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono
 trait UserRepository {
   def getUserById(userId: String): Mono[User]
 
-  def save(user: User): Mono[Unit]
+  def save(user: User): Mono[Option[User]]
 }
