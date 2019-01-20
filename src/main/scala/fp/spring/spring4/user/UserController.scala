@@ -13,7 +13,7 @@ class UserController(
     userRepository.getUserById(userId)
 
   @PostMapping(value = Array("/user"))
-  def put(@RequestBody user: User): Unit =
+  def put(@RequestBody user: User): Option[User] =
     userRepository.save(user)
 
   @GetMapping(value = Array("/user/{userId}/age"))
