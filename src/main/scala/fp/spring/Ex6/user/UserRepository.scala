@@ -1,7 +1,7 @@
 package fp.spring.Ex6.user
 
-trait UserRepository {
-  def getUserById(userId: String): Result[User]
+trait UserRepository[F[_]] {
+  def getUserById(userId: String): F[User]
 
-  def save(user: User): Result[Option[User]]
+  def save(user: User): F[Option[User]]
 }
