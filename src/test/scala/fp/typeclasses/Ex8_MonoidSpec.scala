@@ -2,7 +2,7 @@ package fp.typeclasses
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class MonoidSpec extends FlatSpec with Matchers {
+class Ex8_MonoidSpec extends FlatSpec with Matchers {
   it should "combine strings" in {
     val monoid = Monoid.monoidString
     assert(monoid.empty == "")

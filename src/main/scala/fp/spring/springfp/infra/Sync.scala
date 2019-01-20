@@ -19,7 +19,7 @@ object Sync {
     override def getUserById(userId: String): Id[User] =
       users(userId)
 
-    override def save(user: User): Id[String] = {
+    override def save(user: User): Id[UserId] = {
       users.put(user.userId, user)
       user.userId
     }

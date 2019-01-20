@@ -2,7 +2,7 @@ package fp.typeclasses
 
 import org.scalatest.{FlatSpec, Matchers}
 
-class ShowSpec extends FlatSpec with Matchers {
+class Ex7_ShowSpec extends FlatSpec with Matchers {
   behavior of "Show"
 
   def show[T](t: T)(implicit s: Show[T]) = s.show(t)
