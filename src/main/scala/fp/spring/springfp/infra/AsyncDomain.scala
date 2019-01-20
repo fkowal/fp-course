@@ -30,7 +30,7 @@ object AsyncDomain {
     override def getUserById(userId: String): Mono[User] =
       Mono.just(repo.getUserById(userId))
 
-    override def save(user: User): Mono[String] =
+    override def save(user: User): Mono[UserId] =
       Mono.just(repo.save(user))
   }
 
