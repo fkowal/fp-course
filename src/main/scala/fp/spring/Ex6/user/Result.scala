@@ -1,12 +1,14 @@
 package fp.spring.Ex6.user
 
-case class Result[A](result: A) {
+case class Result[A](result: A)
 
-  def flatMap[B](f: A => Result[B]): Result[B] =
-    f(result)
+object Result {
 
-  def map[B](f: A => B): Result[B] =
-    Result(f(result))
+  def pure[A](a: A): Result[A] = ???
+
+  def zip[A, B](a: Result[A], b: Result[B]): Result[(A, B)] = ???
+
+  def map[A, B](fa: Result[A])(f: A => B): Result[B] = ???
+
+  def flatMap[A, B](fa: Result[A])(f: A => Result[B]): Result[B] = ???
 }
-
-object Result {}

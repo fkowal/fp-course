@@ -10,7 +10,9 @@ object Applicative {
   implicit val optionAppicative = new Applicative[Option] {
     override def pure[A](x: A): Option[A] = Option(x)
 
-    override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] = Apply.apOption.ap(ff)(fa)
+//    override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] = Apply.apOption.ap(ff)(fa)
+    override def zip[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] =
+      Apply.apOption.zip(fa, fb)
 
     override def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
   }

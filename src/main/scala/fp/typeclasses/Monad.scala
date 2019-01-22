@@ -10,7 +10,7 @@ object Monad {
   implicit val opMonad = new Monad[Option] {
     override def pure[A](x: A): Option[A] = ???
 
-    override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] = ???
+    override def zip[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] = ???
 
     override def map[A, B](fa: Option[A])(f: A => B): Option[B] = ???
 

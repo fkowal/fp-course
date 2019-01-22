@@ -7,5 +7,5 @@ trait UserRepository[F[_]] {
 
   def getUserById(userId: UserId): F[User]
 
-  def save(user: User): F[String]
+  def save(user: User): F[Option[User]]
 }

@@ -67,7 +67,7 @@ object SpringWebFluxApp extends App {
       GET("/user/{userId}/age"),
       request => {
         val userId = request.pathVariable("userId")
-        ServerResponse.ok().body(nat(controller.functorRequired(userId)), classOf[Int])
+        ServerResponse.ok().body(nat(controller.getAge(userId)), classOf[Int])
       }
     ).andRoute(GET("/user/{userId}"), request => {
         val userId = request.pathVariable("userId")
@@ -77,14 +77,14 @@ object SpringWebFluxApp extends App {
         POST("/user"),
         request => {
 
-          val result: Mono[String] =
+          val result: Mono[Option[User]] =
             request
               .body(BodyExtractors.toMono(classOf[User]))
-              .flatMap(usr => nat(controller.put(usr)))
+              .flatMap(usr => nat(controller.post(usr)))
 
           ServerResponse
             .ok()
-            .body(result, classOf[String])
+            .body(result, classOf[Option[User]])
         }
       )
       .andRoute(

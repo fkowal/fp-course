@@ -22,7 +22,7 @@ object AsyncDomain {
   }
 
   def controller: UserController[Mono] =
-    new UserController[Mono](repo, userService)
+    new UserController[Mono](new UserService(repo, UserDetailServiceImpl))
 
   object repo extends UserRepository[Mono] {
     val repo = Sync.repo
@@ -30,11 +30,11 @@ object AsyncDomain {
     override def getUserById(userId: String): Mono[User] =
       Mono.just(repo.getUserById(userId))
 
-    override def save(user: User): Mono[UserId] =
+    override def save(user: User): Mono[Option[User]] =
       Mono.just(repo.save(user))
   }
 
-  object userService extends UserDetailService[Mono] {
+  object UserDetailServiceImpl extends UserDetailService[Mono] {
     override def getUserDetails(user: User): Mono[UserDetails] =
       Mono
         .delay(Duration.ofSeconds(1))

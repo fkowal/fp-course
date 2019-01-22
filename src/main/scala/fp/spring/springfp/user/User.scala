@@ -1,6 +1,6 @@
 package fp.spring.springfp.user
 
-trait BaseUser {
+sealed trait BaseUser {
   def name: String
 }
 case class User(userId: String, name: String, age: Int) extends BaseUser

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 @Service
-class UserService extends UserDetailService {
+class UserDetailServiceImpl extends UserDetailService {
   override def getUserDetails(user: User): Mono[UserDetails] =
     Mono
       .delay(Duration.ofSeconds(1))

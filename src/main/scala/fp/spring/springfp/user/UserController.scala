@@ -1,47 +1,30 @@
 package fp.spring.springfp.user
 
-import cats.{Applicative, Monad}
-import cats.implicits._
 import org.springframework.web.bind.annotation._
 
 @RestController
-class UserController[F[_]: Monad](
-  userRepository: UserRepository[F],
-  service: UserDetailService[F]
+class UserController[F[_]](
+  userService: UserService[F]
 ) {
 
   @GetMapping(value = Array("/user/{userId}"))
   def get(@PathVariable("userId") userId: String): F[User] =
-    userRepository.getUserById(userId)
+    userService.getUserById(userId)
 
   @PostMapping(value = Array("/user"))
-  def put(@RequestBody user: User): F[String] =
-    userRepository.save(user)
+  def post(@RequestBody user: User): F[Option[User]] =
+    userService.save(user)
 
   @GetMapping(value = Array("/user/{userId}/age"))
-  def functorRequired(@PathVariable("userId") userId: String): F[Int] =
-    userRepository
-      .getUserById(userId)
-      .map(_.age) // functor (syntax/extension method) needed to support this
+  def getAge(@PathVariable("userId") userId: String): F[Int] =
+    userService.getUserAge(userId)
 
   @GetMapping(value = Array("/user/{userId}/base"))
-  def applicativeRequired(@PathVariable("userId") userId: String): F[BaseUser] = {
-    def getUserFromDbOrGuest(userId: String): F[BaseUser] = {
-      if (userId == "guest")
-        Applicative[F].pure(Guest) // support Applicative type class instance to handle the default/fallback case
-      else
-        userRepository
-          .getUserById(userId)
-          .map(user => user: BaseUser)
-    }
-
-    getUserFromDbOrGuest(userId)
+  def getBaseUser(@PathVariable("userId") userId: String): F[BaseUser] = {
+    userService.getBaseUser(userId)
   }
 
   @GetMapping(value = Array("/user/{userId}/details"))
   def userDetails(@PathVariable("userId") userId: String): F[UserDetails] =
-    for {
-      user <- userRepository.getUserById(userId)
-      details <- service.getUserDetails(user)
-    } yield details
+    userService.getUserDetails(userId)
 }

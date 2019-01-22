@@ -33,7 +33,7 @@ class Spring5Fp {
   def monadId = Sync.idMonad
 
   @Bean
-  def userService = Sync.userService
+  def userDetailService = Sync.UserDetailServiceImpl
 
 //  @Bean
 //  def monadMono = AsyncDomain.monadMono
@@ -42,7 +42,7 @@ class Spring5Fp {
 //  def monoRepo: UserRepository[Mono] = AsyncDomain.repo
 //
 //  @Bean
-//  def userService = AsyncDomain.userService
+//  def userDetailService = AsyncDomain.UserDetailServiceImpl
 }
 
 object Spring5Fp extends App {

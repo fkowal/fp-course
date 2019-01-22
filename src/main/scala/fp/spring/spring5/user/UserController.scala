@@ -5,28 +5,24 @@ import reactor.core.publisher.Mono
 
 @RestController
 class UserController(
-  userRepository: UserRepository,
-  userDetailService: UserDetailService
+  userService: UserService
 ) {
 
   @GetMapping(value = Array("/user/{userId}"))
   def get(@PathVariable("userId") userId: String): Mono[User] =
-    userRepository.getUserById(userId)
+    userService.getUserById(userId)
 
   @PostMapping(value = Array("/user"))
-  def put(@RequestBody user: User): Mono[Option[User]] =
-    userRepository.save(user)
+  def post(@RequestBody user: User): Mono[Option[User]] =
+    userService.save(user)
 
   @GetMapping(value = Array("/user/{userId}/age"))
   def age(@PathVariable("userId") userId: String): Mono[Int] =
-    userRepository
+    userService
       .getUserById(userId)
       .map(_.age)
 
   @GetMapping(value = Array("/user/{userId}/details"))
   def userDetails(@PathVariable("userId") userId: String): Mono[UserDetails] =
-    for {
-      user <- userRepository.getUserById(userId)
-      details <- userDetailService.getUserDetails(user)
-    } yield details
+    userService.getUserDetails(userId)
 }
