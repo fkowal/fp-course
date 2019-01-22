@@ -11,7 +11,7 @@ object Sync {
 
   implicit val idMonad = Monad[Id]
 
-  def controller: UserController[Id] = new UserController(repo, userService)
+  def controller: UserController[Id] = new UserController(new UserService(repo, UserDetailServiceImpl))
 
   object repo extends UserRepository[Id] {
     val users = scala.collection.mutable.Map[String, User]()
@@ -19,13 +19,12 @@ object Sync {
     override def getUserById(userId: String): Id[User] =
       users(userId)
 
-    override def save(user: User): Id[UserId] = {
+    override def save(user: User): Id[Option[User]] = {
       users.put(user.userId, user)
-      user.userId
     }
   }
 
-  object userService extends UserDetailService[Id] {
+  object UserDetailServiceImpl extends UserDetailService[Id] {
     override def getUserDetails(user: User): Id[UserDetails] =
       if (user.name.contains("error"))
         throw new RuntimeException(s"failed fetching user details $user")

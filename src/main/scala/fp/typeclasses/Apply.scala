@@ -1,16 +1,19 @@
 package fp.typeclasses
 
 trait Apply[F[_]] extends Functor[F] {
-  def ap[A, B](ff: F[A => B])(fa: F[A]): F[B]
+  def zip[A, B](fa: F[A], fb: F[B]): F[(A, B)]
 }
 
 object Apply {
+  type *[A, B] = (A, B)
+// F[A] * F[B] = F[A * B]
   implicit val apOption = new Apply[Option] {
-    override def ap[A, B](ff: Option[A => B])(fa: Option[A]): Option[B] =
-      for {
-        f <- ff
-        a <- fa
-      } yield f(a)
+
+    override def zip[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] =
+      (fa, fb) match {
+        case (Some(a), Some(b)) => Option((a, b))
+        case _ => None
+      }
 
     override def map[A, B](fa: Option[A])(f: A => B): Option[B] =
       Functor.optionFunctor.map(fa)(f)
