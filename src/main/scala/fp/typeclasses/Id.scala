@@ -9,7 +9,7 @@ object Id {
 
     override def pure[A](x: A): Id[A] = x
 
-    override def ap[A, B](ff: Id[A => B])(fa: Id[A]): Id[B] = ff(fa)
+    override def zip[A, B](fa: Id[A], fb: Id[B]): (A, B) = (fa, fb)
 
     override def map[A, B](fa: Id[A])(f: A => B): Id[B] = f(fa)
   }
