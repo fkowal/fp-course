@@ -3,7 +3,9 @@ import simulacrum.{op, typeclass}
 
 @typeclass
 trait Monad[F[_]] extends Applicative[F] {
-  @op(">>=", alias = true) def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+
+  @op(">>=", alias = true)
+  def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
 }
 
 object Monad {
