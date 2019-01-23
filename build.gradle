@@ -35,6 +35,7 @@ dependencies {
 
     compile group: "org.typelevel", name: 'cats-core_'+scalaVersion, version: "1.5.0"
     compile group: "com.chuusai", name: 'shapeless_'+scalaVersion, version: "2.3.3"
+    compile group: "com.github.mpilquist", name: "simulacrum_"+scalaVersion, version: "0.15.0"
 
 //    compile "org.scala-lang:scala-compiler:2.12.8"
 //    testCompile group: "com.lihaoyi", name: "ammonite_2.12.8", version: "1.6.0"
@@ -89,7 +90,8 @@ tasks.withType(ScalaCompile) {
 //  "-Ywarn-unused:params",              // Warn if a value parameter is unused.
             "-Ywarn-unused:patvars",             // Warn if a variable bound in a pattern is unused.
             "-Ywarn-unused:privates",            // Warn if a private member is unused.
-            "-Ywarn-value-discard"               // Warn when non-Unit expression results are unused.
+            "-Ywarn-value-discard",               // Warn when non-Unit expression results are unused.
+            "-Ymacro-annotations"                 // enable simulacrum typeclass annotations only in 2.13
 
             // 2.12 options
             //  "-Xlint:by-name-right-associative",  // By-name parameter of right associative operator.

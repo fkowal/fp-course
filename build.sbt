@@ -10,10 +10,13 @@ val catsVersion = "1.5.0"
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % catsVersion,
   "com.chuusai" %% "shapeless" % "2.3.3",
-//  "com.lihaoyi" % "ammonite" % "1.6.0" % Test cross CrossVersion.full,
-  "org.scalatest" %% "scalatest" % "3.0.6-SNAP5" % Test,
   "org.springframework.boot" % "spring-boot-starter-webflux" % "2.1.0.RELEASE",
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.8"
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.8",
+  "com.github.mpilquist" %% "simulacrum" % "0.15.0",
+
+  //  "com.lihaoyi" % "ammonite" % "1.6.0" % Test cross CrossVersion.full,
+  "org.scalatest" %% "scalatest" % "3.0.6-SNAP5" % Test
+  
 )
 val start =
   """
@@ -68,7 +71,9 @@ scalacOptions ++= Seq(
 //  "-Ywarn-unused:params",              // Warn if a value parameter is unused.
   "-Ywarn-unused:patvars",             // Warn if a variable bound in a pattern is unused.
   "-Ywarn-unused:privates",            // Warn if a private member is unused.
-  "-Ywarn-value-discard"               // Warn when non-Unit expression results are unused.
+  "-Ywarn-value-discard",               // Warn when non-Unit expression results are unused.
+  "-Ymacro-annotations"                 // enable simulacrum typeclass annotations only in 2.13
+
 
   // 2.12 options
   //  "-Xlint:by-name-right-associative",  // By-name parameter of right associative operator.
