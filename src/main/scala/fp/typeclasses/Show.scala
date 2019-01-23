@@ -5,9 +5,6 @@ trait Show[A] {
 }
 
 object Show {
-  // materializer
-  def apply[A](implicit s: Show[A]): Show[A] = s
-  //  def apply[A: Show](): Show[A] = implicitly[Show[A]]
 
   // constructor
   def pure[A](func: A => String): Show[A] = new Show[A] {
@@ -22,10 +19,4 @@ object Show {
 
   implicit def list[A: Show]: Show[List[A]] = ???
 
-  object Syntax {
-    // val.show support
-    implicit class ShowSyntax[T: Show](t: T) {
-      def show(): String = Show[T].show(t)
-    }
-  }
 }

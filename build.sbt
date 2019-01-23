@@ -10,11 +10,13 @@ val catsVersion = "1.5.0"
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % catsVersion,
   "com.chuusai" %% "shapeless" % "2.3.3",
-//  "com.lihaoyi" % "ammonite" % "1.6.0" % Test cross CrossVersion.full,
-  "org.scalatest" %% "scalatest" % "3.0.6-SNAP5" % Test,
   "org.springframework.boot" % "spring-boot-starter-webflux" % "2.1.0.RELEASE",
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.9.8",
-  "com.github.mpilquist" %% "simulacrum" % "0.15.0"
+  "com.github.mpilquist" %% "simulacrum" % "0.15.0",
+
+  //  "com.lihaoyi" % "ammonite" % "1.6.0" % Test cross CrossVersion.full,
+  "org.scalatest" %% "scalatest" % "3.0.6-SNAP5" % Test
+  
 )
 val start =
   """
