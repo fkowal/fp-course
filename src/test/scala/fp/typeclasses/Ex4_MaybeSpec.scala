@@ -5,6 +5,14 @@ import org.scalatest.{FlatSpec, Matchers}
 class Ex4_MaybeSpec extends FlatSpec with Matchers {
   import Maybe._
 
+  it should "be empty" in {
+    Empty.isEmpty should be(true)
+  }
+
+  it should "not be empty" in {
+    Just(2).isEmpty should be(false)
+  }
+
   it should "map" in {
     assert(Just(1).map(_ + 1) == Just(2))
 

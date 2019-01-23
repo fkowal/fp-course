@@ -12,12 +12,9 @@ object Apply {
   implicit val apOption: Apply[Option] = new Apply[Option] {
 
     override def zip[A, B](fa: Option[A], fb: Option[B]): Option[(A, B)] =
-      (fa, fb) match {
-        case (Some(a), Some(b)) => Option((a, b))
-        case _ => None
-      }
+      ???
 
     override def map[A, B](fa: Option[A])(f: A => B): Option[B] =
-      Functor.optionFunctor.map(fa)(f)
+      ???
   }
 }
