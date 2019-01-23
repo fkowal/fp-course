@@ -1,14 +1,14 @@
 package fp.typeclasses
 
 import shapeless.{::, Generic, HList, HNil}
+import simulacrum.{op, typeclass}
 
+@typeclass
 trait CsvEncoder[A] {
-  def encode(value: A): List[String]
+  @op("csv") def encode(value: A): List[String]
 }
 
 object CsvEncoder {
-  def apply[A: CsvEncoder](): CsvEncoder[A] = implicitly[CsvEncoder[A]]
-
   def pure[A](f: A => List[String]): CsvEncoder[A] = ???
 
   implicit val intEncode: CsvEncoder[Int] = ???
@@ -35,17 +35,11 @@ object CsvEncoder {
   ): CsvEncoder[A] =
     pure(a => encoder.encode(generic.to(a)))
 
-  object CsvOps {
-    implicit class CsvSyntax[A](a: A) {
-      def csv(implicit csvEncoder: CsvEncoder[A]): List[String] = csvEncoder.encode(a)
-    }
-  }
-
   def encodeCsv[A](a: A): List[String] = ???
 }
 
 object CsvMain extends App {
-  import CsvEncoder.encodeCsv
+  import CsvEncoder._
 
 //  println(encodeCsv("Dave"))
 //  println(encodeCsv(123))
@@ -53,8 +47,6 @@ object CsvMain extends App {
 
 //  println(encodeCsv(List("a", "b")))
 
-  //  println(encodeCsv(HNil))
-  //  println(encodeCsv[HNil](HNil))
   case class IceCream(str: String, i: Int, bool: Boolean)
   case class Employee(str: String, i: Int, bool: Boolean)
 
@@ -63,5 +55,4 @@ object CsvMain extends App {
 //  println(encodeCsv(Employee("name", 332, true)))
 //  println(encodeCsv("str" :: 123 :: false :: HNil))
 
-  //  println(encodeCsv(Company(Employee("a", 1, false)))) // needs lazy to skip over diverging implicit expansion for typ
 }

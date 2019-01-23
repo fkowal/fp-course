@@ -4,13 +4,13 @@ import org.scalatest.{FlatSpec, Matchers}
 import shapeless.HNil
 
 class CsvEncoderSpec extends FlatSpec with Matchers {
-  import CsvEncoder.encodeCsv
+  import CsvEncoder._
 
   it should "compile" in {
     "CsvEncoder[String]" should compile
   }
 //  it should "encode string" in {
-//    assert(CsvEncoder[String]().encode("string") === List("string"))
+//    assert(CsvEncoder[String].encode("string") === List("string"))
 //  }
 //
 //  it should "encode int" in {
