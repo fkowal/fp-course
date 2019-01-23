@@ -1,8 +1,9 @@
 package fp.typeclasses
+import simulacrum.{op, typeclass}
 
 object exerciseEq extends App {
 
-  import Eq.Syntax._
+  import Eq.ops._
 
   def check(i: Int): String =
     if (i === 1) "It is one!" else "It is something else then 1"
@@ -18,12 +19,12 @@ object exerciseEq extends App {
   * 3. Create instance for Int
   * 4. Reimplelemnt check method using Eq
   */
+@typeclass
 trait Eq[T] {
-  def eqv(a: T, b: T): Boolean
+  @op("===") def eqv(a: T, b: T): Boolean
 }
 
 object Eq {
-  @inline def apply[F](implicit F: Eq[F]): Eq[F] = F
 
   def pure[T](fn: (T, T) => Boolean): Eq[T] = (a: T, b: T) => fn(a, b)
 
@@ -31,9 +32,5 @@ object Eq {
 
   implicit val intEq: Eq[Int] = equalA[Int]
 
-  object Syntax {
-    implicit class EqSyntax[T: Eq](t: T) {
-      def ===(t2: T): Boolean = Eq[T].eqv(t, t2)
-    }
-  }
+  implicit val stringEq: Eq[String] = equalA[String]
 }
