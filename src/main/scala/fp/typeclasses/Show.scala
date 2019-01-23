@@ -1,5 +1,7 @@
 package fp.typeclasses
+import simulacrum.typeclass
 
+@typeclass
 trait Show[A] {
   def show(value: A): String
 }

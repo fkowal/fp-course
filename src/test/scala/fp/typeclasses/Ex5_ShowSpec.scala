@@ -8,7 +8,7 @@ class Ex5_ShowSpec extends FlatSpec with Matchers {
   def show[T](t: T)(implicit s: Show[T]) = s.show(t)
 
   it should "display string" in {
-//    assert(Show[String].show("abc") === "abc")
+    assert(Show[String].show("abc") === "abc")
   }
 
   it should "display int" in {
