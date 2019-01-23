@@ -10,6 +10,9 @@ trait Functor[F[_]] {
 }
 
 object Functor {
-  implicit val optionFunctor: cats.Functor[Option] = ???
+  implicit val optionFunctor: Functor[Option] = new Functor[Option] {
+    override def map[A, B](fa: Option[A])(f: A => B): Option[B] =
+      fa.map(f)
+  }
 
 }
