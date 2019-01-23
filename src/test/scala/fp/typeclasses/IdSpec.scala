@@ -1,13 +1,11 @@
 package fp.typeclasses
 
 import fp.typeclasses.Id._
-import Monad.Syntax._
-//import cats.Id
-//import cats.implicits._
 import org.scalatest.Matchers
 import org.scalatest.FlatSpec
 
 class IdSpec extends FlatSpec with Matchers {
+  import Monad.ops._
   it should "support functor mapping" in {
     val idInt: Id[Int] = 3
 

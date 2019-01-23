@@ -2,6 +2,11 @@ package fp.typeclasses
 
 sealed trait Maybe[+A] {
 
+  def isEmpty: Boolean = this match {
+    case _: Just[A] => false
+    case Empty => true
+  }
+
   def map[B](f: A => B): Maybe[B] = ???
 
   def flatMap[B](f: A => Maybe[B]): Maybe[B] = ???
@@ -10,8 +15,6 @@ case class Just[+A](value: A) extends Maybe[A]
 case object Empty extends Maybe[Nothing]
 
 object Maybe {
-  @inline def apply[A: Maybe]: Maybe[A] = implicitly[Maybe[A]]
-
   def just[A](value: A): Maybe[A] = ???
 
   def empty[A](): Maybe[A] = ???
