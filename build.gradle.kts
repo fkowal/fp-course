@@ -1,58 +1,65 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 buildscript {
     dependencies {
-        classpath 'cz.alenkacz:gradle-scalafmt:1.7.0'
+        classpath("cz.alenkacz:gradle-scalafmt:1.7.0")
     }
 }
 
 plugins {
-    id 'java'
-    id 'scala'
-    id 'application'
-    id 'maven-publish'
-    id 'com.github.maiflai.scalatest' version '0.23'
-    id 'jacoco'
+    java
+    scala
+    application
+    id("maven-publish")
+    id("com.github.maiflai.scalatest") version "0.23"
 }
 
-apply plugin: 'scalafmt'
+apply(plugin = "scalafmt")
 
-sourceCompatibility = 1.8
+application {
+    //mainClassName = "fp.spring.spring4.UserApp"
+    //mainClassName = "fp.spring.spring5.Spring5App"
+    //mainClassName = "fp.spring.springfp.Spring5Fp"
+    mainClassName = "fp.spring.springfp.SpringWebFluxApp"
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
+group = "fp"
 
-project.group = 'fp'
 
 repositories {
     mavenCentral()
 }
-ext {
-    scalaVersion = '2.13.0-M5'
-}
+
+val scalaVersion = "2.13.0-M5"
 
 dependencies {
     // scala
-    compile group: 'org.scala-lang',               name: 'scala-library',                 version: '2.13.0-M5'
-    compile group: 'org.scala-lang',               name: 'scala-reflect',                 version: '2.13.0-M5'
-    compile group: "org.springframework.boot",     name: "spring-boot-starter-webflux",   version: "2.1.0.RELEASE"
-    compile group: "com.fasterxml.jackson.module", name: "jackson-module-scala_"+scalaVersion,     version: "2.9.8"
+    compile(group = "org.scala-lang",               name = "scala-library",                 version = "2.13.0-M5")
+    compile(group = "org.scala-lang",               name = "scala-reflect",                 version = "2.13.0-M5")
+    compile(group = "org.springframework.boot",     name = "spring-boot-starter-webflux",   version = "2.1.0.RELEASE")
+    compile(group = "com.fasterxml.jackson.module", name = "jackson-module-scala_"+scalaVersion,     version = "2.9.8")
 
-    compile group: "org.typelevel", name: 'cats-core_'+scalaVersion, version: "1.5.0"
-    compile group: "com.chuusai", name: 'shapeless_'+scalaVersion, version: "2.3.3"
-    compile group: "com.github.mpilquist", name: "simulacrum_"+scalaVersion, version: "0.15.0"
+    compile(group = "org.typelevel", name = "cats-core_"+scalaVersion, version = "1.5.0")
+    compile(group = "com.chuusai", name = "shapeless_"+scalaVersion, version = "2.3.3")
+    compile(group = "com.github.mpilquist", name = "simulacrum_"+scalaVersion, version = "0.15.0")
 
-//    compile "org.scala-lang:scala-compiler:2.12.8"
-//    testCompile group: "com.lihaoyi", name: "ammonite_2.12.8", version: "1.6.0"
-    testCompile group: "org.scalatest", name: 'scalatest_'+scalaVersion, version: "3.0.6-SNAP5"
-    testRuntime group: 'org.pegdown', name: 'pegdown', version: '1.6.0'
+//    compile("org.scala-lang:scala-compiler:2.12.8"
+//    testCompile(group = "com.lihaoyi", name = "ammonite_2.12.8", version = "1.6.0"
+    testCompile(group = "org.scalatest", name = "scalatest_"+scalaVersion, version = "3.0.6-SNAP5")
+    testRuntime(group = "org.pegdown", name = "pegdown", version = "1.6.0")
 }
 
-//mainClassName = 'fp.spring.spring4.UserApp'
-//mainClassName = 'fp.spring.spring5.Spring5App'
-//mainClassName = 'fp.spring.springfp.Spring5Fp'
-mainClassName = 'fp.spring.springfp.SpringWebFluxApp'
 
-compileJava.options.compilerArgs += '-parameters'
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(arrayOf("-parameters"))
+}
 
-tasks.withType(ScalaCompile) {
-    scalaCompileOptions.deprecation = false
-    scalaCompileOptions.additionalParameters = [
+tasks.withType<ScalaCompile> {
+//    scalaCompileOptions.deprecation = false
+    scalaCompileOptions.additionalParameters = listOf(
             // @see https://tpolecat.github.io/2017/04/25/scalac-flags.html
             "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
             "-encoding", "utf-8",                // Specify character encoding used by source files.
@@ -73,7 +80,7 @@ tasks.withType(ScalaCompile) {
             "-Xlint:inaccessible",               // Warn about inaccessible types in method signatures.
             "-Xlint:infer-any",                  // Warn when a type argument is inferred to be `Any`.
             "-Xlint:missing-interpolator",       // A string literal appears to be missing an interpolator id.
-            "-Xlint:nullary-override",           // Warn when non-nullary `def f()' overrides nullary `def f'.
+            "-Xlint:nullary-override",           // Warn when non-nullary `def f()" overrides nullary `def f".
             "-Xlint:nullary-unit",               // Warn when nullary methods return Unit.
             "-Xlint:option-implicit",            // Option.apply used implicit view.
             "-Xlint:package-object-classes",     // Class or object defined in package object.
@@ -93,22 +100,22 @@ tasks.withType(ScalaCompile) {
             "-Ywarn-value-discard",               // Warn when non-Unit expression results are unused.
             "-Ymacro-annotations"                 // enable simulacrum typeclass annotations only in 2.13
 
-            // 2.12 options
-            //  "-Xlint:by-name-right-associative",  // By-name parameter of right associative operator.
-            //  "-Xlint:unsound-match",              // Pattern match may not be typesafe.
-            //  "-Yno-adapted-args",                 // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
-            //  "-Ypartial-unification",             // Enable partial unification in type constructor inference
-            //  "-Ywarn-inaccessible",               // Warn about inaccessible types in method signatures.
-            //  "-Ywarn-infer-any",                  // Warn when a type argument is inferred to be `Any`.
-            //  "-Ywarn-nullary-override",           // Warn when non-nullary `def f()' overrides nullary `def f'.
-            //  "-Ywarn-nullary-unit",               // Warn when nullary methods return Unit.
-    ]
+//            // 2.12 options
+//            //  "-Xlint:by-name-right-associative",  // By-name parameter of right associative operator.
+//            //  "-Xlint:unsound-match",              // Pattern match may not be typesafe.
+//            //  "-Yno-adapted-args",                 // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
+//            //  "-Ypartial-unification",             // Enable partial unification in type constructor inference
+//            //  "-Ywarn-inaccessible",               // Warn about inaccessible types in method signatures.
+//            //  "-Ywarn-infer-any",                  // Warn when a type argument is inferred to be `Any`.
+//            //  "-Ywarn-nullary-override",           // Warn when non-nullary `def f()" overrides nullary `def f".
+//            //  "-Ywarn-nullary-unit",               // Warn when nullary methods return Unit.
+    )
 }
 
-test {
+tasks.withType<Test> {
     maxParallelForks = 1
     testLogging {
-        exceptionFormat = 'full'
+        exceptionFormat = TestExceptionFormat.FULL
     }
 }
 
@@ -117,9 +124,9 @@ test {
 //    main = "scala.tools.nsc.MainGenericRunner"
 //    classpath = sourceSets.main.runtimeClasspath
 //    standardInput System.in
-//    args '-usejavacp'
+//    args "-usejavacp"
 //}
 
-wrapper {
-    gradleVersion = '5.1'
+tasks.withType<Wrapper> {
+    gradleVersion = "5.1"
 }
