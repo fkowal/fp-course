@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 buildscript {
     dependencies {
-        classpath("cz.alenkacz:gradle-scalafmt:1.7.0")
+        classpath("cz.alenkacz:gradle-scalafmt:1.8.0")
     }
 }
 
@@ -11,7 +11,7 @@ plugins {
     scala
     application
     id("maven-publish")
-    id("com.github.maiflai.scalatest") version "0.23"
+    id("com.github.maiflai.scalatest") version "0.24"
 }
 
 apply(plugin = "scalafmt")
@@ -41,13 +41,13 @@ dependencies {
     compile(group = "org.springframework.boot",     name = "spring-boot-starter-webflux",   version = "2.1.0.RELEASE")
     compile(group = "com.fasterxml.jackson.module", name = "jackson-module-scala_"+scalaVersion,     version = "2.9.8")
 
-    compile(group = "org.typelevel", name = "cats-core_"+scalaVersion, version = "1.5.0")
+    compile(group = "org.typelevel", name = "cats-core_"+scalaVersion, version = "1.6.0")
     compile(group = "com.chuusai", name = "shapeless_"+scalaVersion, version = "2.3.3")
     compile(group = "com.github.mpilquist", name = "simulacrum_"+scalaVersion, version = "0.15.0")
 
 //    compile("org.scala-lang:scala-compiler:2.12.8"
 //    testCompile(group = "com.lihaoyi", name = "ammonite_2.12.8", version = "1.6.0"
-    testCompile(group = "org.scalatest", name = "scalatest_"+scalaVersion, version = "3.0.6-SNAP5")
+    testCompile(group = "org.scalatest", name = "scalatest_"+scalaVersion, version = "3.0.7-RC1")
     testRuntime(group = "org.pegdown", name = "pegdown", version = "1.6.0")
 }
 
@@ -58,7 +58,6 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.withType<ScalaCompile> {
-//    scalaCompileOptions.deprecation = false
     scalaCompileOptions.additionalParameters = listOf(
             // @see https://tpolecat.github.io/2017/04/25/scalac-flags.html
             "-deprecation",                      // Emit warning and location for usages of deprecated APIs.
@@ -128,5 +127,5 @@ tasks.withType<Test> {
 //}
 
 tasks.withType<Wrapper> {
-    gradleVersion = "5.1"
+    gradleVersion = "5.2.1"
 }

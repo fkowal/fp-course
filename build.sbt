@@ -5,7 +5,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 
 scalaVersion := "2.13.0-M5"
 
-val catsVersion = "1.5.0"
+val catsVersion = "1.6.0"
 
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % catsVersion,
